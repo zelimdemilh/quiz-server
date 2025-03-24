@@ -1,4 +1,4 @@
-const { questionController } = require("../controllers/questionController");
+const { questionController } = require("../controllers/question.controller");
 const authMiddleware = require("../middleware/auth.middleware");
 
 const { Router } = require("express");
