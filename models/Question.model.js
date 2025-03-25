@@ -6,16 +6,16 @@ const questionSchema = mongoose.Schema({
     required: true,  // Обязательное поле для текста вопроса
   },
   options: [{
-    type: String,  // Массив строк для вариантов ответов
-    required: true,  // Обязательное поле для вариантов ответа
+    type: String,
+    required: true,
   }],
   correctAnswer: {
     type: String,
-    required: true,  // Обязательное поле для правильного ответа
+    required: true,
   },
   createdAt: {
     type: Date,
-    default: Date.now,  // Время создания вопроса
+    default: Date.now,
   },
 });
 
