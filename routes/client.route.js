@@ -5,8 +5,8 @@ const { Router } = require("express");
 
 const router = Router();
 
-router.get("/", clientController.getAllClients);
-router.get('/:id', clientController.getOneClient);
+router.get("/", authMiddleware, clientController.getAllClients);
+router.get('/:id', authMiddleware, clientController.getOneClient);
 router.post("/signup", clientController.signUpClient);
 router.post("/signIn", clientController.signIn);
 router.delete("/", authMiddleware, clientController.deleteClient);
