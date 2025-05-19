@@ -4,7 +4,14 @@ module.exports.testController = {
   getAllTests: async (req, res) => {
     try {
       const tests = await Test.find().populate("questions");
-      res.status(200).json(tests);
+      const user = await Client.findById(req.user.userId);
+
+      const testsWithStatus = tests.map(test => ({
+        ...test.toObject(),
+        isPassed: user.passedTests.some(t => t.testId.equals(test._id))
+      }));
+
+      res.status(200).json(testsWithStatus);
     } catch (e) {
       res.status(400).json({ error: e.toString() });
     }
