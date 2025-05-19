@@ -72,6 +72,48 @@ module.exports = {
     }
   },
 
+  updateTestProgress: async (req, res) => {
+    try {
+      const { testId, questionId, selectedOption } = req.body;
+      const userId = req.user.userId;
+
+      // Находим или создаем запись о прохождении
+      let testResult = await TestResult.findOne({ userId, testId });
+
+      if (!testResult) {
+        testResult = new TestResult({
+          userId,
+          testId,
+          answers: [],
+          score: 0
+        });
+      }
+
+      // Обновляем/добавляем ответ
+      const question = await Question.findById(questionId);
+      const isCorrect = selectedOption === question.correctAnswer;
+
+      const answerIndex = testResult.answers.findIndex(a =>
+        a.questionId.equals(questionId)
+      );
+
+      if (answerIndex >= 0) {
+        testResult.answers[answerIndex] = { questionId, selectedOption, isCorrect };
+      } else {
+        testResult.answers.push({ questionId, selectedOption, isCorrect });
+      }
+
+      // Пересчитываем прогресс
+      const correctCount = testResult.answers.filter(a => a.isCorrect).length;
+      testResult.score = Math.round((correctCount / test.questions.length) * 100);
+
+      await testResult.save();
+      res.json({ success: true });
+    } catch (e) {
+      res.status(500).json({ error: e.toString() });
+    }
+  },
+
   getUserResults: async (req, res) => {
     try {
       const results = await TestResult.find({ userId: req.user.userId })
