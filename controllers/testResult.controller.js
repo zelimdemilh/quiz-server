@@ -2,7 +2,7 @@ const Client = require("../models/Client.model");
 const Test = require("../models/Test.model");
 const TestResult = require("../models/TestResult.model");
 
-module.exports = {
+module.exports.testResultController = {
   saveTestResult: async (req, res) => {
     try {
       const { testId, answers } = req.body;
