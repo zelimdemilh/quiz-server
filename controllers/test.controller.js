@@ -1,4 +1,5 @@
 const Test = require("../models/Test.model");
+const Client = require("../models/Client.model");
 
 module.exports.testController = {
   getAllTests: async (req, res) => {
